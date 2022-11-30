@@ -1,7 +1,9 @@
-const catalogList = document.querySelector('.catalog__list');
-const modalProduct = document.querySelector('.modal_product');
+import { catalogList, modalProduct } from "./elements.js";
+import { navigationListController } from "./navigationListController.js";
+import { openModal } from "./openModal.js";
+import { renderListProduct } from "./renderListProduct.js";
 
-const product = {
+const burgerMax = {
   title: 'Бургер Макс',
   price: 10_000,
   weight: 5000,
@@ -17,60 +19,11 @@ const product = {
   ],
 };
 
-// Формирование содержимого модального окна
-
-const modalProductTitle = document.querySelector('.modal-product__title');
-const modalProductImage = document.querySelector('.modal-product__image');
-const modalProductDescription = document.querySelector('.modal-product__description');
-const ingredientsList = document.querySelector('.ingredients__list');
-const ingredientsCalories = document.querySelector('.ingredients__calories');
-const modalProductPriceCount = document.querySelector('.modal-product__price-count');
-
-modalProductTitle.textContent = product.title; // Название
-modalProductImage.src = product.image; // Картинка
-
-// Список ингредиентов 
-// 1 способ
-ingredientsList.textContent = '';
-for (let i = 0; i < product.ingredients.length; i++) {
-  const li = document.createElement('li');
-  li.className = 'ingredients__item';
-  li.textContent = product.ingredients[i];
-  ingredientsList.append(li);
-}
-
-// 2 способ
-ingredientsList.textContent = '';
-product.ingredients.forEach((item) => {
-  const li = document.createElement('li');
-  li.className = 'ingredients__item';
-  li.textContent = item;
-  ingredientsList.append(li);
-});
-
-// 3 способ (рекомендуемый!)
-ingredientsList.textContent = '';
-const ingredientsListItems = product.ingredients.map((item) => {
-  const li = document.createElement('li');
-  li.className = 'ingredients__item';
-  li.textContent = item;
-  return li;
-});
-ingredientsList.append(...ingredientsListItems);
-
-modalProductPriceCount.textContent = new Intl.NumberFormat("ru", {style: "decimal",minimumFractionDigits:0}).format(product.price);
-ingredientsCalories.innerHTML = `${new Intl.NumberFormat('ru', {
-  style: 'decimal',
-  minimumFractionDigits: 0,
-}).format(product.weight)}&nbsp;г, ккал&nbsp;${new Intl.NumberFormat('ru', {
-  style: 'decimal',
-  minimumFractionDigits: 0,
-}).format(product.calories)}`;
-modalProductDescription.textContent = product.description;
+//* -------------------------------------- *//
 
 catalogList.addEventListener('click', (e) => {
   if (e.target.closest('.product__detail') || e.target.closest('.product__image')) {
-    modalProduct.classList.add('modal_open');
+    openModal(burgerMax);
   }
 });
 
@@ -79,3 +32,10 @@ modalProduct.addEventListener('click', (e) => {
     modalProduct.classList.remove('modal_open');
   }
 });
+
+const init = () => {
+  renderListProduct();
+  navigationListController();
+};
+
+init();
