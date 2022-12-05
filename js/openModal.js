@@ -1,11 +1,15 @@
-import { modalProductTitle, modalProductImage, modalProductDescription, ingredientsList, ingredientsCalories, modalProductPriceCount, modalProduct } from "./elements.js";
+import { API_URL, PREFIX_PRODUCT } from "./const.js";
+import { modalProductTitle, modalProductImage, modalProductDescription, ingredientsList, ingredientsCalories, modalProductPriceCount, modalProduct, modalProductBtn } from "./elements.js";
+import { getData } from "./getData.js";
 
 //! Функция для формирования и открытия модального окна
-export const openModal = (product) => {
+export const openModal = async (id) => {
+  const product = await getData(`${API_URL}${PREFIX_PRODUCT}/${id}`)
+  
   //! Формирование содержимого модального окна
 
   modalProductTitle.textContent = product.title; // Название
-  modalProductImage.src = product.image; // Картинка
+  modalProductImage.src = `${API_URL}/${product.image}`; // Картинка
 
   //* Список ингредиентов
   // 1 способ
@@ -52,6 +56,9 @@ export const openModal = (product) => {
   }).format(product.calories)}`;
   // Описание
   modalProductDescription.textContent = product.description;
+
+  // Записываем id продукта (из базы) в data-атрибут data-id-product
+  modalProductBtn.dataset.idProduct = product.id;
 
   //! Открытие модального окна
   modalProduct.classList.add('modal_open');

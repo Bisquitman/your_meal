@@ -6,7 +6,7 @@ export const createCardProduct = (product) => {
   li.className = 'catalog__item';
 
   li.innerHTML = `
-    <article class="product">
+    <article class="product" data-id-product="${product.id}">
       <img class="product__image" src="${API_URL}/${product.image}" alt="${product.title}">
 
       <p class="product__price">${new Intl.NumberFormat('ru', {
